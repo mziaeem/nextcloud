@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nextcloud:
+    image: nextcloud:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - NEXTCLOUD_ADMIN_USER=admin
+      - NEXTCLOUD_ADMIN_PASSWORD=admin
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost
+      - OBJECTSTORE_BUCKET=mdz
+      - OBJECTSTORE_ACCESS_KEY=ac811124-e3cf-445a-8cbe-1f6d41c7708f
+      - OBJECTSTORE_SECRET_KEY=e64294fdd014525ce31223d854a3f83273ca12194ad9bf412959e51dd3d562ce
+      - OBJECTSTORE_REGION=us-east-1
+      - OBJECTSTORE_ENDPOINT=https://s3.ir-tbz-sh1.arvanstorage.ir
+      - OBJECTSTORE_USE_SSL=true
+    volumes:
+      - nextcloud:/var/www/html
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  nextcloud:
+  db:
